@@ -6,7 +6,7 @@ const INITIAL_STATE = {};
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case WALLET:
-    return [...state, action.value];
+    return { currencies: Object.keys(action.wallet) };
   default:
     return state;
   }
