@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import connect from 'react-redux/lib/connect/connect';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userAction } from '../actions/index';
 
@@ -10,14 +11,13 @@ class Login extends React.Component {
       sbmtEnabled: true,
       user: { email: '' },
     };
+    this.handleclick = this.handleclick.bind(this);
   }
 
-  handleclick = (event) => {
-    event.preventDefault();
-    const { history } = this.props;
+  handleclick = () => {
+    const { userToProps } = this.props;
     const { user } = this.state;
-    userAction(user);
-    history.push('/carteira');
+    userToProps(user);
   }
 
   enableBtn = (event) => {
@@ -54,7 +54,7 @@ class Login extends React.Component {
         />
         <Link to="/carteira">
           <button
-            type="submit"
+            type="button"
             onClick={ this.handleclick }
             disabled={ sbmtEnabled }
           >
@@ -67,7 +67,11 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  user: (user) => dispatch(userAction(user)),
+  userToProps: (user) => dispatch(userAction(user)),
 });
+
+Login.propTypes = {
+  userToProps: PropTypes.func.isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Login);
