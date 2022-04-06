@@ -63,7 +63,7 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { user, wallet: { currencies } } = this.props;
+    const { user, wallet: { currencies, expenses } } = this.props;
     const { total,
       value, description, currency, method, tag } = this.state;
     return (
@@ -151,6 +151,38 @@ class Wallet extends React.Component {
             <th>Moeda de conversão</th>
             <th>Editar/Excluir</th>
           </tr>
+          {
+            expenses
+                && expenses.map(
+                  (expense) => (
+                    <tr key={ expense.description }>
+                      <td>{expense.description}</td>
+                      <td>{expense.tag}</td>
+                      <td>{expense.method}</td>
+                      <td>{parseFloat(expense.value).toFixed(2)}</td>
+                      <td>{expense.exchangeRates[expense.currency].name}</td>
+                      <td>
+                        {
+                          parseFloat(
+                            expense.exchangeRates[expense.currency].ask,
+                          ).toFixed(2)
+                        }
+
+                      </td>
+                      <td>
+                        {
+                          parseFloat(
+                            expense.value * expense.exchangeRates[expense.currency].ask,
+                          ).toFixed(2)
+                        }
+
+                      </td>
+                      <td>Real</td>
+                      <td>Editar/Excluir</td>
+                    </tr>
+                  ),
+                )
+          }
         </div>
         <button
           type="button"
