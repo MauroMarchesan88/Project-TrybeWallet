@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCurrency } from '../actions';
-import { addExpense } from '../actions/addExpense';
+import { addExpense, updateExpenses } from '../actions/addExpense';
 import requestAPI from '../services/APIrequest';
 
 class Wallet extends React.Component {
@@ -15,8 +15,15 @@ class Wallet extends React.Component {
   }
 
   componentDidMount = () => {
-    const { walletToProps } = this.props;
+    const { walletToProps, wallet: { expenses } } = this.props;
     walletToProps();
+    const total = expenses.map(
+      (expense) => expense.value * expense.exchangeRates[expense.currency].ask,
+    );
+    const somaTotal = total[0] + total[1];
+    this.setState({
+      total: somaTotal,
+    });
   }
 
   fetchCurrencyComplete = async () => {
@@ -45,7 +52,6 @@ class Wallet extends React.Component {
     newExpenseToProps(expense);
     const valueToNumber = Number(value);
     const cambio = exchangeRates[currency].ask;
-    console.log(cambio);
     this.setState({
       total: total + (valueToNumber * cambio),
       id: id + 1,
@@ -53,12 +59,22 @@ class Wallet extends React.Component {
     });
   }
 
-  handleChange = (event) => {
-    const { target } = event;
-    const { name } = target;
-    const { value } = target;
+  handleChange = ({ target }) => {
+    const { name, value } = target;
     this.setState({
       [name]: value,
+    });
+  }
+
+  handleDelete = (expense) => {
+    const { wallet: { expenses }, updExpense } = this.props;
+    const { total } = this.state;
+    const { id, currency, value, exchangeRates } = expense;
+    const removeExpense = expenses.filter((row) => row.id !== id);
+    updExpense(removeExpense);
+    const removeValue = exchangeRates[currency].ask * value;
+    this.setState({
+      total: total - removeValue,
     });
   }
 
@@ -139,23 +155,24 @@ class Wallet extends React.Component {
             </select>
           </label>
         </form>
-        <div>
-          <tr>
-            <th>Descrição</th>
-            <th>Tag</th>
-            <th>Método de pagamento</th>
-            <th>Valor</th>
-            <th>Moeda</th>
-            <th>Câmbio utilizado</th>
-            <th>Valor convertido</th>
-            <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
-          </tr>
-          {
-            expenses
+        <table>
+          <tbody>
+            <tr>
+              <th>Descrição</th>
+              <th>Tag</th>
+              <th>Método de pagamento</th>
+              <th>Valor</th>
+              <th>Moeda</th>
+              <th>Câmbio utilizado</th>
+              <th>Valor convertido</th>
+              <th>Moeda de conversão</th>
+              <th>Editar/Excluir</th>
+            </tr>
+            {
+              expenses
                 && expenses.map(
                   (expense) => (
-                    <tr key={ expense.description }>
+                    <tr key={ expense.id }>
                       <td>{expense.description}</td>
                       <td>{expense.tag}</td>
                       <td>{expense.method}</td>
@@ -167,7 +184,6 @@ class Wallet extends React.Component {
                             expense.exchangeRates[expense.currency].ask,
                           ).toFixed(2)
                         }
-
                       </td>
                       <td>
                         {
@@ -175,15 +191,24 @@ class Wallet extends React.Component {
                             expense.value * expense.exchangeRates[expense.currency].ask,
                           ).toFixed(2)
                         }
-
                       </td>
                       <td>Real</td>
-                      <td>Editar/Excluir</td>
+                      <td>
+                        Editar/
+                        <button
+                          type="button"
+                          data-testid="delete-btn"
+                          onClick={ () => this.handleDelete(expense) }
+                        >
+                          Excluir
+                        </button>
+                      </td>
                     </tr>
                   ),
                 )
-          }
-        </div>
+            }
+          </tbody>
+        </table>
         <button
           type="button"
           onClick={ this.handleExpenseToProps }
@@ -200,11 +225,11 @@ Wallet.propTypes = {
   user: PropTypes.objectOf(PropTypes.string).isRequired,
   walletToProps: PropTypes.func.isRequired,
   wallet: PropTypes.shape({
-    currencies: PropTypes.objectOf(PropTypes.array),
-    expenses: PropTypes.string,
+    currencies: PropTypes.arrayOf(PropTypes.object),
+    expenses: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
   newExpenseToProps: PropTypes.func.isRequired,
-  // total: PropTypes.number.isRequired,
+  updExpense: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -215,6 +240,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   walletToProps: (wallet) => dispatch(fetchCurrency(wallet)),
   newExpenseToProps: (expenses) => dispatch(addExpense(expenses)),
+  updExpense: (expenses) => dispatch(updateExpenses(expenses)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
