@@ -20,7 +20,7 @@ class Wallet extends React.Component {
     const total = expenses.map(
       (expense) => expense.value * expense.exchangeRates[expense.currency].ask,
     );
-    const somaTotal = total[0] + total[1];
+    const somaTotal = total.length > 0 ? total[0] + total[1] : 0;
     this.setState({
       total: somaTotal,
     });
