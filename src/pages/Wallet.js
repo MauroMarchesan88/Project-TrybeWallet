@@ -61,9 +61,7 @@ class Wallet extends React.Component {
 
   handleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
+    this.setState({ [name]: value });
   }
 
   handleDelete = (expense) => {
@@ -73,9 +71,7 @@ class Wallet extends React.Component {
     const removeExpense = expenses.filter((row) => row.id !== id);
     updExpense(removeExpense);
     const removeValue = exchangeRates[currency].ask * value;
-    this.setState({
-      total: total - removeValue,
-    });
+    this.setState({ total: total - removeValue });
   }
 
   render() {
@@ -132,7 +128,6 @@ class Wallet extends React.Component {
               value={ method }
               onChange={ this.handleChange }
             >
-              <option disabled>Escolha um metodo</option>
               <option>Dinheiro</option>
               <option>Cartão de crédito</option>
               <option>Cartão de débito</option>
@@ -146,7 +141,6 @@ class Wallet extends React.Component {
               value={ tag }
               onChange={ this.handleChange }
             >
-              <option disabled>Escolha uma opção</option>
               <option>Alimentação</option>
               <option>Lazer</option>
               <option>Trabalho</option>
@@ -194,7 +188,13 @@ class Wallet extends React.Component {
                       </td>
                       <td>Real</td>
                       <td>
-                        Editar/
+                        <button
+                          type="button"
+                          data-testid="edit-btn"
+                          onClick={ () => this.handleEdit(expense) }
+                        >
+                          Editar
+                        </button>
                         <button
                           type="button"
                           data-testid="delete-btn"
