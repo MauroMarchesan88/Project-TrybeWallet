@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { fetchCurrency } from '../actions';
 import { addExpense, updateExpenses } from '../actions/addExpense';
 import requestAPI from '../services/APIrequest';
+import './Wallet.css';
 
 class Wallet extends React.Component {
   constructor() {
@@ -80,11 +81,11 @@ class Wallet extends React.Component {
       value, description, currency, method, tag } = this.state;
     return (
       <div>
-        TrybeWallet
+        <h1>TrybeWallet</h1>
         <section>
-          <p data-testid="email-field">{user.email}</p>
+          <p data-testid="email-field" className="email">{user.email}</p>
           <p data-testid="total-field">{parseFloat(total).toFixed(2)}</p>
-          <div data-testid="header-currency-field">BRL</div>
+          <div data-testid="header-currency-field" className="currency">BRL</div>
         </section>
         <form>
           <input
@@ -191,7 +192,7 @@ class Wallet extends React.Component {
                         <button
                           type="button"
                           data-testid="edit-btn"
-                          onClick={ () => this.handleEdit(expense) }
+                          onClick={ () => this.handleExpenseToProps(expense) }
                         >
                           Editar
                         </button>

@@ -1,0 +1,43 @@
+body {
+  align-items: center;
+  color: burlywood;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 10px;
+}
+
+section {
+  align-items: center;
+  border: solid rgb(202, 186, 165) 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.email {
+  margin-right: 50px;
+}
+
+.currency {
+  margin-left: 2px;
+}
+
+#currency-input {
+  margin-left: 2px;
+}
+
+th {
+  border: solid 2px rgb(73, 71, 71);
+  margin-left: 2px;
+}
