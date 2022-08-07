@@ -2,7 +2,7 @@ body {
   align-items: center;
   color: burlywood;
   display: flex;
-  flex-direction: column;
+  flex-flow: column;
 }
 
 h1 {
@@ -40,4 +40,12 @@ section {
 th {
   border: solid 2px rgb(73, 71, 71);
   margin-left: 2px;
+}
+
+@media only screen and ( max-width : 850px ) {
+
+  body {
+    flex-flow: row;
+    font-size: x-large;
+  }
 }

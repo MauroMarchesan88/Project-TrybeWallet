@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchCurrency } from '../actions';
-import { addExpense, updateExpenses } from '../actions/addExpense';
-import requestAPI from '../services/APIrequest';
+import { fetchCurrency } from '../../actions';
+import { addExpense, updateExpenses } from '../../actions/addExpense';
+import requestAPI from '../../services/APIrequest';
 import './Wallet.css';
 
 class Wallet extends React.Component {
@@ -93,16 +93,16 @@ class Wallet extends React.Component {
             name="value"
             data-testid="value-input"
             placeholder="Valor"
-            value={ value }
-            onChange={ this.handleChange }
+            value={value}
+            onChange={this.handleChange}
           />
           <input
             type="text"
             name="description"
             data-testid="description-input"
             placeholder="Descrição"
-            value={ description }
-            onChange={ this.handleChange }
+            value={description}
+            onChange={this.handleChange}
           />
           <label htmlFor="currency-input">
             Moeda
@@ -110,13 +110,13 @@ class Wallet extends React.Component {
               data-testid="currency-input"
               id="currency-input"
               name="currency"
-              value={ currency }
-              onChange={ this.handleChange }
+              value={currency}
+              onChange={this.handleChange}
             >
               {
                 currencies
                 && currencies.map(
-                  (currcy) => <option key={ currcy }>{currcy}</option>,
+                  (currcy) => <option key={currcy}>{currcy}</option>,
                 )
               }
             </select>
@@ -126,8 +126,8 @@ class Wallet extends React.Component {
               data-testid="method-input"
               id="method-input"
               name="method"
-              value={ method }
-              onChange={ this.handleChange }
+              value={method}
+              onChange={this.handleChange}
             >
               <option>Dinheiro</option>
               <option>Cartão de crédito</option>
@@ -139,8 +139,8 @@ class Wallet extends React.Component {
               data-testid="tag-input"
               id="tag-input"
               name="tag"
-              value={ tag }
-              onChange={ this.handleChange }
+              value={tag}
+              onChange={this.handleChange}
             >
               <option>Alimentação</option>
               <option>Lazer</option>
@@ -165,54 +165,54 @@ class Wallet extends React.Component {
             </tr>
             {
               expenses
-                && expenses.map(
-                  (expense) => (
-                    <tr key={ expense.id }>
-                      <td>{expense.description}</td>
-                      <td>{expense.tag}</td>
-                      <td>{expense.method}</td>
-                      <td>{parseFloat(expense.value).toFixed(2)}</td>
-                      <td>{expense.exchangeRates[expense.currency].name}</td>
-                      <td>
-                        {
-                          parseFloat(
-                            expense.exchangeRates[expense.currency].ask,
-                          ).toFixed(2)
-                        }
-                      </td>
-                      <td>
-                        {
-                          parseFloat(
-                            expense.value * expense.exchangeRates[expense.currency].ask,
-                          ).toFixed(2)
-                        }
-                      </td>
-                      <td>Real</td>
-                      <td>
-                        <button
-                          type="button"
-                          data-testid="edit-btn"
-                          onClick={ () => this.handleExpenseToProps(expense) }
-                        >
-                          Editar
-                        </button>
-                        <button
-                          type="button"
-                          data-testid="delete-btn"
-                          onClick={ () => this.handleDelete(expense) }
-                        >
-                          Excluir
-                        </button>
-                      </td>
-                    </tr>
-                  ),
-                )
+              && expenses.map(
+                (expense) => (
+                  <tr key={expense.id}>
+                    <td>{expense.description}</td>
+                    <td>{expense.tag}</td>
+                    <td>{expense.method}</td>
+                    <td>{parseFloat(expense.value).toFixed(2)}</td>
+                    <td>{expense.exchangeRates[expense.currency].name}</td>
+                    <td>
+                      {
+                        parseFloat(
+                          expense.exchangeRates[expense.currency].ask,
+                        ).toFixed(2)
+                      }
+                    </td>
+                    <td>
+                      {
+                        parseFloat(
+                          expense.value * expense.exchangeRates[expense.currency].ask,
+                        ).toFixed(2)
+                      }
+                    </td>
+                    <td>Real</td>
+                    <td>
+                      <button
+                        type="button"
+                        data-testid="edit-btn"
+                        onClick={() => this.handleExpenseToProps(expense)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        type="button"
+                        data-testid="delete-btn"
+                        onClick={() => this.handleDelete(expense)}
+                      >
+                        Excluir
+                      </button>
+                    </td>
+                  </tr>
+                ),
+              )
             }
           </tbody>
         </table>
         <button
           type="button"
-          onClick={ this.handleExpenseToProps }
+          onClick={this.handleExpenseToProps}
         >
           Adicionar despesa
         </button>
