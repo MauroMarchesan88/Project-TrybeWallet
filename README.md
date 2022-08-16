@@ -1,6 +1,6 @@
 
-# Projeto-TrybeWallet
+# Project-TrybeWallet
 
-Projeto em desenvolvimento com React-Redux, uma todo-list com valores numericos baseados no cambio importado da API.
+Project in development with React-Redux, a todo-list with exchange values from an external API.
 
-Link do deploy: https://trybe-wallet-mauro.netlify.app
+Link to deploy: https://trybe-wallet-mauro.netlify.app
